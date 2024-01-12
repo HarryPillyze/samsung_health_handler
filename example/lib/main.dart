@@ -14,7 +14,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  Stream<StepCountDataType> stepStream = SamsungHealthHandler.stream;
+  Stream<StepCountDataType?> stepStream = SamsungHealthHandler.stream;
   bool loading = true;
 
   @override
@@ -76,19 +76,19 @@ class _MyAppState extends State<MyApp> {
                 Row(
                   children: <Widget>[
 //                        Calls data of 2020/04/05
-                    RaisedButton(
+                    ElevatedButton(
                       child: Text('today'),
                       onPressed: () {
                         SamsungHealthHandler.passTimestamp(DateTime.now().millisecondsSinceEpoch);
                       },
                     ),
-                    RaisedButton(
+                    ElevatedButton(
                       child: Text('prevDate'),
                       onPressed: () async {
                         SamsungHealthHandler.prevDate();
                       },
                     ),
-                    RaisedButton(
+                    ElevatedButton(
                       child: Text('nextDate'),
                       onPressed: () {
                         SamsungHealthHandler.nextDate();
@@ -99,13 +99,13 @@ class _MyAppState extends State<MyApp> {
                 Text('On hot restart, dispose method of stateful widget does not work.'
                     '\n So, If you want to reinitialize SamsungHealthHandler,'
                     '\n you have to manually dispose and reinitialize.'),
-                RaisedButton(
+                ElevatedButton(
                   onPressed: () {
                     disposeSamsungHealth();
                   },
                   child: Text('dispose'),
                 ),
-                RaisedButton(
+                ElevatedButton(
                   onPressed: () async {
                     try {
 //                    Must be called after initialized
@@ -135,7 +135,7 @@ class _MyAppState extends State<MyApp> {
                       // print('바이닝?');
                       // print(res.binningData);
                       if (res.binningData != null) {
-                        res.binningData.forEach((element) {
+                        res.binningData?.forEach((element) {
                           print(element.toJson());
                         });
                       }
@@ -147,22 +147,22 @@ class _MyAppState extends State<MyApp> {
                   child: Text('getStepCount once'),
                 ),
                 if (!loading)
-                  StreamBuilder<StepCountDataType>(
+                  StreamBuilder<StepCountDataType?>(
                     stream: stepStream,
                     initialData: StepCountDataType.fromJson({}),
-                    builder: (BuildContext context, AsyncSnapshot<StepCountDataType> snapshot) {
+                    builder: (BuildContext context, AsyncSnapshot<StepCountDataType?> snapshot) {
                       // if (snapshot.connectionState)
                       if (snapshot.data?.timestamp != null) {
                         // try {
                         print('jqwioejqwiojeioqwjoi');
-                        print(snapshot.data.toJson());
-                        var timestamp = snapshot.data.timestamp;
+                        print(snapshot.data!.toJson());
+                        var timestamp = snapshot.data!.timestamp;
                         var date = DateTime.fromMillisecondsSinceEpoch(timestamp);
-                        var steps = snapshot.data.stepCount;
+                        var steps = snapshot.data?.stepCount;
 //                      Data of today only delivers stepCount
-                        var calorie = snapshot.data.calorie;
-                        var distance = snapshot.data.distance;
-                        var binningData = snapshot.data.binningData;
+                        var calorie = snapshot.data?.calorie;
+                        var distance = snapshot.data?.distance;
+                        var binningData = snapshot.data?.binningData;
                         print(binningData);
                         return Column(
                           children: <Widget>[

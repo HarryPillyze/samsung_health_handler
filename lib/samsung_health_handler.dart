@@ -20,7 +20,7 @@ class SamsungHealthHandler {
       EventChannel('samsung_health_handler_event_connection_channel');
 
   // ignore: close_sinks
-  static StreamController<StepCountDataType> streamController = StreamController.broadcast();
+  static StreamController<StepCountDataType?> streamController = StreamController.broadcast();
 
   static Stream<StepCountDataType?> get stream =>
       SamsungHealthHandler.stepChannel.receiveBroadcastStream().map((event) {
